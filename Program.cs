@@ -22,15 +22,31 @@ namespace Inventario.Backend
 
             builder.Services.AddControllers();
 
-            // Configuración de la base de datos MySQL usando variables de entorno de Railway
-            var connectionString = $"Server={Environment.GetEnvironmentVariable("MYSQLHOST")};" +
-                                 $"Port={Environment.GetEnvironmentVariable("MYSQLPORT")};" +
-                                 $"Database={Environment.GetEnvironmentVariable("MYSQL_DATABASE")};" +
-                                 $"User={Environment.GetEnvironmentVariable("MYSQLUSER")};" +
-                                 $"Password={Environment.GetEnvironmentVariable("MYSQLPASSWORD")};";
+            try
+            {
+                // Configuración de la base de datos MySQL usando variables de entorno de Railway
+                var mysqlHost = Environment.GetEnvironmentVariable("MYSQLHOST") ?? throw new InvalidOperationException("MYSQLHOST no configurado");
+                var mysqlPort = Environment.GetEnvironmentVariable("MYSQLPORT") ?? throw new InvalidOperationException("MYSQLPORT no configurado");
+                var mysqlDatabase = Environment.GetEnvironmentVariable("MYSQL_DATABASE") ?? throw new InvalidOperationException("MYSQL_DATABASE no configurado");
+                var mysqlUser = Environment.GetEnvironmentVariable("MYSQLUSER") ?? throw new InvalidOperationException("MYSQLUSER no configurado");
+                var mysqlPassword = Environment.GetEnvironmentVariable("MYSQLPASSWORD") ?? throw new InvalidOperationException("MYSQLPASSWORD no configurado");
 
-            builder.Services.AddDbContext<DataContext>(options =>
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+                var connectionString = $"Server={mysqlHost};" +
+                                     $"Port={mysqlPort};" +
+                                     $"Database={mysqlDatabase};" +
+                                     $"User={mysqlUser};" +
+                                     $"Password={mysqlPassword};" +
+                                     "AllowPublicKeyRetrieval=true;" +
+                                     "SslMode=Preferred;";
+
+                builder.Services.AddDbContext<DataContext>(options =>
+                    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error configurando la base de datos: {ex.Message}");
+                throw; // Re-throw para que Railway pueda ver el error
+            }
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -50,11 +66,19 @@ namespace Inventario.Backend
 
             app.MapControllers();
 
-            // Asegurar que la base de datos existe y está actualizada
-            using (var scope = app.Services.CreateScope())
+            try
             {
-                var db = scope.ServiceProvider.GetRequiredService<DataContext>();
-                db.Database.EnsureCreated(); // Esto creará la base de datos y las tablas
+                // Asegurar que la base de datos existe y está actualizada
+                using (var scope = app.Services.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+                    db.Database.EnsureCreated(); // Esto creará la base de datos y las tablas
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creando la base de datos: {ex.Message}");
+                throw; // Re-throw para que Railway pueda ver el error
             }
 
             app.Run();
