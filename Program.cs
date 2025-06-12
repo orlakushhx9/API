@@ -22,7 +22,7 @@ namespace Inventario.Backend
 
             builder.Services.AddControllers();
 
-            // Configuración de la base de datos MySQL
+            // Configuración de la base de datos MySQL usando variables de entorno de Railway
             var connectionString = $"Server={Environment.GetEnvironmentVariable("MYSQLHOST")};" +
                                  $"Port={Environment.GetEnvironmentVariable("MYSQLPORT")};" +
                                  $"Database={Environment.GetEnvironmentVariable("MYSQL_DATABASE")};" +
@@ -50,11 +50,11 @@ namespace Inventario.Backend
 
             app.MapControllers();
 
-            // Aplicar migraciones automáticamente
+            // Asegurar que la base de datos existe y está actualizada
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<DataContext>();
-                db.Database.Migrate();
+                db.Database.EnsureCreated(); // Esto creará la base de datos y las tablas
             }
 
             app.Run();

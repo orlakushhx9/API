@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\745\\Source\\Repos\\InventarioPro\\Inventario.Backend\\Inventario.Backend.csproj": {}
+    "C:\\Users\\745\\source\\repos\\InventarioPro\\Inventario.Backend\\Inventario.Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\745\\Source\\Repos\\InventarioPro\\Inventario.Backend\\Inventario.Backend.csproj": {
+    "C:\\Users\\745\\source\\repos\\InventarioPro\\Inventario.Backend\\Inventario.Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\745\\Source\\Repos\\InventarioPro\\Inventario.Backend\\Inventario.Backend.csproj",
+        "projectUniqueName": "C:\\Users\\745\\source\\repos\\InventarioPro\\Inventario.Backend\\Inventario.Backend.csproj",
         "projectName": "Inventario.Backend",
-        "projectPath": "C:\\Users\\745\\Source\\Repos\\InventarioPro\\Inventario.Backend\\Inventario.Backend.csproj",
+        "projectPath": "C:\\Users\\745\\source\\repos\\InventarioPro\\Inventario.Backend\\Inventario.Backend.csproj",
         "packagesPath": "C:\\Users\\745\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\745\\Source\\Repos\\InventarioPro\\Inventario.Backend\\obj\\",
+        "outputPath": "C:\\Users\\745\\source\\repos\\InventarioPro\\Inventario.Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
